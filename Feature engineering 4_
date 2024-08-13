@@ -1,0 +1,586 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "06d17ca9-2d08-471c-aab0-9dde261368eb",
+   "metadata": {},
+   "source": [
+    "Q1. What is data encoding? How is it useful in data science?  \n",
+    "\n",
+    "Data Encoding\n",
+    "\n",
+    "Data encoding is the process of converting data from one form to another, usually for the purpose of transmission, storage, or analysis. In data science, encoding is essential for transforming raw data into a format that can be efficiently processed by machine learning algorithms.\n",
+    "\n",
+    "\n",
+    "Importance of Data Encoding in Data Science\n",
+    "\n",
+    "Handling Categorical Data: Many machine learning algorithms require numerical input. Encoding techniques convert categorical data (e.g., gender, color) into numerical values that algorithms can process.\n",
+    "\n",
+    "Improving Model Performance: Proper encoding can enhance the performance of machine learning models by ensuring that the data is in a suitable format for analysis.\n",
+    "\n",
+    "Data Compression: Encoding can reduce the size of the data, making it easier to store and transmit without losing essential information.\n",
+    "\n",
+    "Data Security: Encoding techniques like encryption can protect sensitive data from unauthorized access.\n",
+    "\n",
+    "Common Encoding Techniques\n",
+    "\n",
+    "1.One-Hot Encoding: Converts categorical variables into binary vectors. Each category is represented by a vector with a single high (1) and the rest low (0)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "7a211e7f-b913-4323-b7c0-6bfa8bbdcabf",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[0. 0. 1.]\n",
+      " [0. 1. 0.]\n",
+      " [1. 0. 0.]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.preprocessing import OneHotEncoder\n",
+    "import pandas as pd\n",
+    "\n",
+    "data = pd.DataFrame({'color': ['red', 'green', 'blue']})\n",
+    "encoder = OneHotEncoder()\n",
+    "encoded_data = encoder.fit_transform(data).toarray()\n",
+    "print(encoded_data)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8cbe75c7-69d5-4351-a82c-3710f7b88db5",
+   "metadata": {},
+   "source": [
+    "2.Label Encoding: Assigns a unique integer to each category\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "1b265d5f-88d3-489e-a4bd-b5cf1a2ac0ad",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[2 1 0]\n"
+     ]
+    }
+   ],
+   "source": [
+    "\n",
+    "from sklearn.preprocessing import LabelEncoder\n",
+    "\n",
+    "data = ['red', 'green', 'blue']\n",
+    "encoder = LabelEncoder()\n",
+    "encoded_data = encoder.fit_transform(data)\n",
+    "print(encoded_data)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c5b7f5f3-419a-4de1-a3a2-ac1416f3e087",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3c01d46c-4eca-41cd-9d68-d06d7ed41848",
+   "metadata": {},
+   "source": [
+    "Q3. In what situations is nominal encoding preferred over one-hot encoding? Provide a practical example.  \n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "48cdc022-0170-40b6-ab9c-ddf0742867c7",
+   "metadata": {},
+   "source": [
+    "Nominal Encoding vs. One-Hot Encoding\n",
+    "\n",
+    "Nominal encoding, also known as label encoding, assigns a unique integer to each category. This method is straightforward and efficient but can introduce unintended ordinal relationships between categories. One-hot encoding, on the other hand, creates binary vectors for each category, ensuring no ordinal relationships are inferred.\n",
+    "\n",
+    "Situations Where Nominal Encoding is Preferred\n",
+    "\n",
+    "Low Cardinality: When the categorical variable has a small number of unique categories, nominal encoding can be more efficient.\n",
+    "\n",
+    "Ordinal Relationships: If the categories have a natural order or ranking, nominal encoding can preserve this relationship.\n",
+    "\n",
+    "Memory Efficiency: Nominal encoding is more memory-efficient than one-hot encoding, especially when dealing with high cardinality categorical variables.\n",
+    "\n",
+    "Tree-Based Algorithms: Algorithms like decision trees and random forests can handle nominal encoded data well, as they do not assume any ordinal relationship between the encoded values"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "77bcd6e7-8d6c-4ce6-b50b-82e37a7edd63",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Original Data:\n",
+      "   day_of_week  day_of_week_encoded\n",
+      "0      Monday                    1\n",
+      "1     Tuesday                    3\n",
+      "2   Wednesday                    4\n",
+      "3    Thursday                    2\n",
+      "4      Friday                    0\n",
+      "Encoded Data:\n",
+      " 0    1\n",
+      "1    3\n",
+      "2    4\n",
+      "3    2\n",
+      "4    0\n",
+      "Name: day_of_week_encoded, dtype: int64\n"
+     ]
+    }
+   ],
+   "source": [
+    "import pandas as pd\n",
+    "from sklearn.preprocessing import LabelEncoder\n",
+    "\n",
+    "# Sample data\n",
+    "data = pd.DataFrame({'day_of_week': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']})\n",
+    "\n",
+    "# Initialize the LabelEncoder\n",
+    "encoder = LabelEncoder()\n",
+    "\n",
+    "# Fit and transform the data\n",
+    "encoded_data = encoder.fit_transform(data['day_of_week'])\n",
+    "\n",
+    "# Add the encoded data to the DataFrame\n",
+    "data['day_of_week_encoded'] = encoded_data\n",
+    "\n",
+    "print(\"Original Data:\\n\", data)\n",
+    "print(\"Encoded Data:\\n\", data['day_of_week_encoded'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "31500c44-b377-43e5-88f5-4017acccbfea",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a2465714-3ea6-4ce7-9a41-90cb74fb317f",
+   "metadata": {},
+   "source": [
+    "Q4. Suppose you have a dataset containing categorical data with 5 unique values. Which encoding technique would you use to transform this data into a format suitable for machine learning algorithms? Explain why you made this choice.  \n",
+    "\n",
+    "Reasons for Choosing One-Hot Encoding\n",
+    "\n",
+    "No Ordinal Relationship: One-hot encoding is ideal when there is no inherent order or ranking among the categories. It treats each category as an independent entity, which is appropriate for most categorical data.\n",
+    "\n",
+    "Avoids Ordinal Assumptions: Unlike label encoding, one-hot encoding does not introduce any ordinal relationships between the categories, which can be misleading for algorithms that interpret numerical values as having a natural order.\n",
+    "\n",
+    "Compatibility with Algorithms: Many machine learning algorithms, especially those based on distance metrics (e.g., k-nearest neighbors, linear regression), perform better with one-hot encoded data as it ensures that the categorical variables are treated equally.\n",
+    "\n",
+    "Low Cardinality: With only 5 unique values, the increase in dimensionality due to one-hot encoding is manageable. Each category will be represented by a binary vector, resulting in 5 new binary features.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "3e4f35fc-b2c9-4e5a-868b-a2f4bbaee192",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Original Data:\n",
+      "   category\n",
+      "0        A\n",
+      "1        B\n",
+      "2        C\n",
+      "3        D\n",
+      "4        E\n",
+      "Encoded Data:\n",
+      "    category_A  category_B  category_C  category_D  category_E\n",
+      "0         1.0         0.0         0.0         0.0         0.0\n",
+      "1         0.0         1.0         0.0         0.0         0.0\n",
+      "2         0.0         0.0         1.0         0.0         0.0\n",
+      "3         0.0         0.0         0.0         1.0         0.0\n",
+      "4         0.0         0.0         0.0         0.0         1.0\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/opt/conda/lib/python3.10/site-packages/sklearn/preprocessing/_encoders.py:808: FutureWarning: `sparse` was renamed to `sparse_output` in version 1.2 and will be removed in 1.4. `sparse_output` is ignored unless you leave `sparse` to its default value.\n",
+      "  warnings.warn(\n"
+     ]
+    }
+   ],
+   "source": [
+    "import pandas as pd\n",
+    "from sklearn.preprocessing import OneHotEncoder\n",
+    "\n",
+    "# Sample data\n",
+    "data = pd.DataFrame({'category': ['A', 'B', 'C', 'D', 'E']})\n",
+    "\n",
+    "# Initialize the OneHotEncoder\n",
+    "encoder = OneHotEncoder(sparse=False)\n",
+    "\n",
+    "# Fit and transform the data\n",
+    "encoded_data = encoder.fit_transform(data[['category']])\n",
+    "\n",
+    "# Create a DataFrame with the encoded data\n",
+    "encoded_df = pd.DataFrame(encoded_data, columns=encoder.get_feature_names_out(['category']))\n",
+    "\n",
+    "print(\"Original Data:\\n\", data)\n",
+    "print(\"Encoded Data:\\n\", encoded_df)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "10505a87-9fd2-44c7-94ea-e66e789996a4",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4ab943d1-c4ff-4927-be8d-35a935218233",
+   "metadata": {},
+   "source": [
+    "Q5. In a machine learning project, you have a dataset with 1000 rows and 5 columns. Two of the columns are categorical, and the remaining three columns are numerical. If you were to use nominal encoding to transform the categorical data, how many new columns would be created? Show your calculations.\n",
+    "\n",
+    "Example Calculation\n",
+    "Let’s assume the two categorical columns have the following unique values:\n",
+    "\n",
+    "Column 1: [‘A’, ‘B’, ‘C’]\n",
+    "\n",
+    "Column 2: [‘X’, ‘Y’]\n",
+    "\n",
+    "Nominal Encoding Process\n",
+    "\n",
+    "Column 1:\n",
+    "\n",
+    "‘A’ -> 0\n",
+    "\n",
+    "‘B’ -> 1\n",
+    "\n",
+    "‘C’ -> 2\n",
+    "\n",
+    "Column 2:\n",
+    "\n",
+    "‘X’ -> 0\n",
+    "\n",
+    "‘Y’ -> 1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "ede7ec60-9e68-403d-a336-ea9477d6b9dd",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Original Data:\n",
+      "    feature1  feature2  feature3 category1 category2  category1_encoded  \\\n",
+      "0         1        10       100         A         X                  0   \n",
+      "1         2        20       200         B         Y                  1   \n",
+      "2         3        30       300         A         X                  0   \n",
+      "3         4        40       400         C         Y                  2   \n",
+      "4         5        50       500         B         X                  1   \n",
+      "\n",
+      "   category2_encoded  \n",
+      "0                  0  \n",
+      "1                  1  \n",
+      "2                  0  \n",
+      "3                  1  \n",
+      "4                  0  \n",
+      "Encoded Data:\n",
+      "    feature1  feature2  feature3  category1_encoded  category2_encoded\n",
+      "0         1        10       100                  0                  0\n",
+      "1         2        20       200                  1                  1\n",
+      "2         3        30       300                  0                  0\n",
+      "3         4        40       400                  2                  1\n",
+      "4         5        50       500                  1                  0\n"
+     ]
+    }
+   ],
+   "source": [
+    "import pandas as pd\n",
+    "from sklearn.preprocessing import LabelEncoder\n",
+    "\n",
+    "# Sample data\n",
+    "data = pd.DataFrame({\n",
+    "    'feature1': [1, 2, 3, 4, 5],\n",
+    "    'feature2': [10, 20, 30, 40, 50],\n",
+    "    'feature3': [100, 200, 300, 400, 500],\n",
+    "    'category1': ['A', 'B', 'A', 'C', 'B'],\n",
+    "    'category2': ['X', 'Y', 'X', 'Y', 'X']\n",
+    "})\n",
+    "\n",
+    "# Initialize the LabelEncoder\n",
+    "encoder1 = LabelEncoder()\n",
+    "encoder2 = LabelEncoder()\n",
+    "\n",
+    "# Fit and transform the data\n",
+    "data['category1_encoded'] = encoder1.fit_transform(data['category1'])\n",
+    "data['category2_encoded'] = encoder2.fit_transform(data['category2'])\n",
+    "\n",
+    "# Drop the original categorical columns\n",
+    "data_encoded = data.drop(['category1', 'category2'], axis=1)\n",
+    "\n",
+    "print(\"Original Data:\\n\", data)\n",
+    "print(\"Encoded Data:\\n\", data_encoded)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f2c856dc-c0eb-454e-a9d1-7a294d731ec6",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bdf14afc-b20e-4394-899d-a2e60308c85a",
+   "metadata": {},
+   "source": [
+    "Q6. You are working with a dataset containing information about different types of animals, including their species, habitat, and diet. Which encoding technique would you use to transform the categorical data into a format suitable for machine learning algorithms? Justify your answer.  \n",
+    "\n",
+    "Reasons for Choosing One-Hot Encoding\n",
+    "\n",
+    "No Ordinal Relationship: One-hot encoding is ideal when there is no inherent order or ranking among the categories. In the case of species, habitat, and diet, these categories are nominal and do not have a natural order.\n",
+    "\n",
+    "Avoids Ordinal Assumptions: Unlike label encoding, one-hot encoding does not introduce any ordinal relationships between the categories, which can be misleading for algorithms that interpret numerical values as having a natural order.\n",
+    "\n",
+    "Compatibility with Algorithms: Many machine learning algorithms, especially those based on distance metrics (e.g., k-nearest neighbors, linear regression), perform better with one-hot encoded data as it ensures that the categorical variables are treated equally.\n",
+    "\n",
+    "Low Cardinality: Even if the number of unique categories is relatively high, one-hot encoding is manageable and ensures that each category is represented independently."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "203f59bd-e70a-466e-8994-00ef0b90cd12",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Original Data:\n",
+      "   species   habitat       diet\n",
+      "0    lion  savannah  carnivore\n",
+      "1   tiger    jungle  carnivore\n",
+      "2    bear    forest   omnivore\n",
+      "3    wolf    forest  carnivore\n",
+      "4     fox    forest   omnivore\n",
+      "Encoded Data:\n",
+      "    species_bear  species_fox  species_lion  species_tiger  species_wolf  \\\n",
+      "0           0.0          0.0           1.0            0.0           0.0   \n",
+      "1           0.0          0.0           0.0            1.0           0.0   \n",
+      "2           1.0          0.0           0.0            0.0           0.0   \n",
+      "3           0.0          0.0           0.0            0.0           1.0   \n",
+      "4           0.0          1.0           0.0            0.0           0.0   \n",
+      "\n",
+      "   habitat_forest  habitat_jungle  habitat_savannah  diet_carnivore  \\\n",
+      "0             0.0             0.0               1.0             1.0   \n",
+      "1             0.0             1.0               0.0             1.0   \n",
+      "2             1.0             0.0               0.0             0.0   \n",
+      "3             1.0             0.0               0.0             1.0   \n",
+      "4             1.0             0.0               0.0             0.0   \n",
+      "\n",
+      "   diet_omnivore  \n",
+      "0            0.0  \n",
+      "1            0.0  \n",
+      "2            1.0  \n",
+      "3            0.0  \n",
+      "4            1.0  \n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/opt/conda/lib/python3.10/site-packages/sklearn/preprocessing/_encoders.py:808: FutureWarning: `sparse` was renamed to `sparse_output` in version 1.2 and will be removed in 1.4. `sparse_output` is ignored unless you leave `sparse` to its default value.\n",
+      "  warnings.warn(\n"
+     ]
+    }
+   ],
+   "source": [
+    "import pandas as pd\n",
+    "from sklearn.preprocessing import OneHotEncoder\n",
+    "\n",
+    "# Sample data\n",
+    "data = pd.DataFrame({\n",
+    "    'species': ['lion', 'tiger', 'bear', 'wolf', 'fox'],\n",
+    "    'habitat': ['savannah', 'jungle', 'forest', 'forest', 'forest'],\n",
+    "    'diet': ['carnivore', 'carnivore', 'omnivore', 'carnivore', 'omnivore']\n",
+    "})\n",
+    "\n",
+    "# Initialize the OneHotEncoder\n",
+    "encoder = OneHotEncoder(sparse=False)\n",
+    "\n",
+    "# Fit and transform the data\n",
+    "encoded_data = encoder.fit_transform(data[['species', 'habitat', 'diet']])\n",
+    "\n",
+    "# Create a DataFrame with the encoded data\n",
+    "encoded_df = pd.DataFrame(encoded_data, columns=encoder.get_feature_names_out(['species', 'habitat', 'diet']))\n",
+    "\n",
+    "print(\"Original Data:\\n\", data)\n",
+    "print(\"Encoded Data:\\n\", encoded_df)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d0806790-5e94-48c2-8329-55f78c07a481",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "24f33dea-54b4-461b-85fd-8aa92a78c76b",
+   "metadata": {},
+   "source": [
+    "Q7.You are working on a project that involves predicting customer churn for a telecommunications company. You have a dataset with 5 features, including the customer's gender, age, contract type, monthly charges, and tenure. Which encoding technique(s) would you use to transform the categorical data into numerical data? Provide a step-by-step explanation of how you would implement the encoding. \n",
+    "\n",
+    "To predict customer churn for a telecommunications company, you need to transform the categorical data into numerical data. The dataset includes the following features:\n",
+    "\n",
+    "Gender (categorical)\n",
+    "\n",
+    "Age (numerical)\n",
+    "\n",
+    "Contract Type (categorical)\n",
+    "\n",
+    "Monthly Charges (numerical)\n",
+    "\n",
+    "Tenure (numerical)\n",
+    "\n",
+    "Encoding Techniques\n",
+    "\n",
+    "One-Hot Encoding: For categorical features without ordinal relationships, such as gender and contract type, one-hot encoding is preferred. This technique creates binary vectors for each category, ensuring no ordinal relationships are inferred.\n",
+    "\n",
+    "Step-by-Step Implementation\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "277dd29a-49b3-4d99-a252-0bf84c2d664b",
+   "metadata": {},
+   "source": [
+    "Step 1: Import Libraries"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "4736cfe4-270e-4cf2-a38b-bc07ace936ae",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "from sklearn.preprocessing import OneHotEncoder"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b73ab500-2c1e-4abe-a6a0-16de896d6437",
+   "metadata": {},
+   "source": [
+    "Step 2: Create Sample Data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "c2c0a37c-f63a-40a6-8255-8e336b6227d6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "data = pd.DataFrame({\n",
+    "    'gender': ['Male', 'Female', 'Female', 'Male', 'Female'],\n",
+    "    'age': [25, 30, 45, 35, 50],\n",
+    "    'contract_type': ['Month-to-month', 'One year', 'Two year', 'Month-to-month', 'One year'],\n",
+    "    'monthly_charges': [70, 80, 90, 60, 100],\n",
+    "    'tenure': [12, 24, 36, 48, 60]\n",
+    "})"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "dbd5d569-f889-4d89-9715-d51f7070af2b",
+   "metadata": {},
+   "source": [
+    "Step 3: Initialize OneHotEncoder"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "b87f1005-8660-4bc2-848d-0a68332e8656",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "encoder = OneHotEncoder(sparse=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "86870d36-e538-487f-9c55-a29c1730e6c3",
+   "metadata": {},
+   "source": [
+    "Step 4: Fit and Transform the Categorical Data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "cb0805f5-af7e-4a85-9419-1c539ad291ee",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.8"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
